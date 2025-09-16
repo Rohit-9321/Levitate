@@ -1,8 +1,7 @@
 // src/components/Navbar.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png"; // adjust path to your logo
-import { useAuth } from "../context/AuthContext"; // if you have context for user
+import { useAuth } from "../context/AuthContext"; // adjust based on your auth setup
 
 const Navbar = () => {
   const { user, logout } = useAuth(); // adjust based on your auth setup
@@ -26,7 +25,7 @@ const Navbar = () => {
         )}
       </div>
       <div className="nav-right">
-        <img src={logo} alt="Levitate" />
+        <span className="logo-text">Levitate</span>
       </div>
     </nav>
   );

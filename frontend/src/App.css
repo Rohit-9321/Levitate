@@ -63,13 +63,15 @@ footer {
 
 /* Navbar container */
 nav {
-  background: #1f2937;
+  background: #1f2937; /* dark gray background */
   color: #fff;
   padding: 12px 16px;
   display: flex;
   justify-content: space-between; /* left links, right logo */
   align-items: center;
   gap: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* subtle shadow */
+  border-bottom: 1px solid #374151;
 }
 
 /* Links container (left side) */
@@ -80,30 +82,48 @@ nav .nav-left {
 }
 
 /* Logo container (right side) */
-nav .nav-right img {
-  height: 40px; /* adjust logo size */
+nav .nav-right .logo-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #3b82f6; /* blue color */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 1px;
+  cursor: default;
+  transition: transform 0.2s ease;
+}
+nav .nav-right .logo-text:hover {
+  transform: scale(1.1); /* subtle hover effect */
 }
 
 /* Link styles */
 nav a {
   color: #fff;
   text-decoration: none;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 6px;
-}
-nav a:hover {
-  background: #111827;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
 
-/* Buttons in navbar */
+nav a:hover {
+  background: #111827; /* valid hex color */
+}
+
 nav button {
-  padding: 6px 10px;
+  padding: 6px 12px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
+
 nav button.secondary {
-  background: #6b7280;
+  background: #6b7280; /* valid hex color */
   color: white;
+}
+
+nav button.secondary:hover {
+  background: #4b5563; /* valid hex color */
 }
 
