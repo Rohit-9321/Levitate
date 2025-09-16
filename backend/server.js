@@ -23,7 +23,7 @@ const __dirname = path.dirname(__filename);
 // ✅ CORS Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173", // fallback if .env not set
+    origin: ["http://localhost:5173", "https://levitate-frontend.onrender.com"]
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })

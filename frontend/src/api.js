@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://levitate-backkends.onrender.com//api"
+  baseURL: "https://levitate-backkends.onrender.com/api"
 });
 
 api.interceptors.request.use((config) => {
