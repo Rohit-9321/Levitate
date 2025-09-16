@@ -17,47 +17,117 @@ export default function AdminCreate() {
   const [videoUrl, setVideoUrl] = useState("");
   const [notes, setNotes] = useState(null);
 
-  const loadSubjects = () => api.get("/subjects").then((r) => setSubjects(r.data));
-  const loadTopics = (subjectId) => {
-    if (!subjectId) return setTopics([]);
-    api.get(`/topics/${subjectId}`).then((r) => setTopics(r.data));
+  // Load subjects, topics, videos
+  const loadSubjects = async () => {
+    try {
+      const res = await api.get("/subjects");
+      setSubjects(res.data);
+    } catch (err) {
+      console.error("Failed to load subjects:", err.response?.data || err.message);
+    }
   };
-  const loadVideos = (topicId) => {
+
+  const loadTopics = async (subjectId) => {
+    if (!subjectId) return setTopics([]);
+    try {
+      const res = await api.get(`/topics/${subjectId}`);
+      setTopics(res.data);
+    } catch (err) {
+      console.error("Failed to load topics:", err.response?.data || err.message);
+    }
+  };
+
+  const loadVideos = async (topicId) => {
     if (!topicId) return setVideos([]);
-    api.get(`/videos/topic/${topicId}`).then((r) => setVideos(r.data));
+    try {
+      const res = await api.get(`/videos/topic/${topicId}`);
+      setVideos(res.data);
+    } catch (err) {
+      console.error("Failed to load videos:", err.response?.data || err.message);
+    }
   };
 
   useEffect(() => { loadSubjects(); }, []);
   useEffect(() => { loadTopics(selectedSubject); }, [selectedSubject]);
   useEffect(() => { loadVideos(selectedTopic); }, [selectedTopic]);
 
+  // CREATE SUBJECT
   const createSubject = async () => {
     if (!subTitle.trim()) return alert("Enter subject title");
-    await api.post("/subjects", { title: subTitle, description: subDesc });
-    setSubTitle(""); setSubDesc("");
-    loadSubjects();
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await api.post(
+        "/subjects",
+        { title: subTitle.trim(), description: subDesc.trim() },
+        { headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          } 
+        }
+      );
+      console.log("Subject created:", res.data);
+      alert(`Subject "${res.data.title}" created successfully!`);
+      setSubTitle(""); setSubDesc("");
+      loadSubjects();
+    } catch (err) {
+      console.error("Error creating subject:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to create subject. Maybe it already exists.");
+    }
   };
 
+  // CREATE TOPIC
   const createTopic = async () => {
-    if (!selectedSubject) return alert("Select subject");
+    if (!selectedSubject) return alert("Select a subject");
     if (!topicTitle.trim()) return alert("Enter topic title");
-    await api.post("/topics", { subjectId: selectedSubject, title: topicTitle });
-    setTopicTitle("");
-    loadTopics(selectedSubject);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await api.post(
+        "/topics",
+        { subjectId: selectedSubject, title: topicTitle.trim() },
+        { headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` 
+          } 
+        }
+      );
+      alert(`Topic "${res.data.title}" created successfully!`);
+      setTopicTitle("");
+      loadTopics(selectedSubject);
+    } catch (err) {
+      console.error("Error creating topic:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to create topic.");
+    }
   };
 
+  // CREATE VIDEO
   const createVideo = async () => {
-    if (!selectedTopic) return alert("Select topic");
+    if (!selectedTopic) return alert("Select a topic");
     if (!videoTitle.trim() || !videoUrl.trim()) return alert("Enter video details");
-    const fd = new FormData();
-    fd.append("topicId", selectedTopic);
-    fd.append("title", videoTitle);
-    fd.append("url", videoUrl);
-    if (notes) fd.append("notes", notes);
-    await api.post("/videos", fd, { headers: { "Content-Type": "multipart/form-data" } });
-    setVideoTitle(""); setVideoUrl(""); setNotes(null);
-    loadVideos(selectedTopic);
-    alert("Video created");
+
+    try {
+      const token = localStorage.getItem("token");
+      const fd = new FormData();
+      fd.append("topicId", selectedTopic);
+      fd.append("title", videoTitle.trim());
+      fd.append("url", videoUrl.trim());
+      if (notes) fd.append("notes", notes);
+
+      const res = await api.post("/videos", fd, {
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      alert(`Video "${res.data.title}" created successfully!`);
+      setVideoTitle(""); setVideoUrl(""); setNotes(null);
+      loadVideos(selectedTopic);
+    } catch (err) {
+      console.error("Error creating video:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to create video.");
+    }
   };
 
   return (
@@ -97,7 +167,7 @@ export default function AdminCreate() {
         <button onClick={createVideo}>Create Video</button>
       </div>
 
-      {/* ✅ List Videos with Add Test button */}
+      {/* List Videos */}
       <div className="card">
         <h3>Videos</h3>
         {videos.length === 0 ? <p>No videos for this topic yet.</p> : (

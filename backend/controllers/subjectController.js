@@ -1,14 +1,23 @@
-import Subject from "../models/Subject.js";
 import Topic from "../models/Topic.js";
 import Video from "../models/Video.js";
 
+import Subject from "../models/Subject.js";
+
 export const createSubject = async (req, res) => {
   try {
-    const { title, description } = req.body;
-    const subject = await Subject.create({ title, description });
-    res.json(subject);
-  } catch (e) {
-    res.status(400).json({ message: e.message });
+    const { title, description } = req.body; // ✅ must match schema
+
+    if (!title) {
+      return res.status(400).json({ message: "Title is required" });
+    }
+
+    const newSubject = new Subject({ title, description });
+    await newSubject.save();
+
+    res.status(201).json(newSubject);
+  } catch (err) {
+    console.error("❌ Error creating subject:", err);
+    res.status(400).json({ message: err.message });
   }
 };
 

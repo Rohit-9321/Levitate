@@ -12,6 +12,7 @@ import TopicPage from "./pages/TopicPage.jsx";
 import ProtectedRoute from "./pages/ProtectedRoute.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import AdminAddTest from "./pages/AdminAddTest.jsx";
+import Footer from "./pages/Footer.jsx";
 
 export default function App() {
   return (
@@ -56,8 +57,10 @@ export default function App() {
 
 
           <Route path="*" element={<div>Not Found</div>} />
+
         </Routes>
       </div>
+      <Footer />
     </div>
   );
 }
