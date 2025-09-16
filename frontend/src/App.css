@@ -63,7 +63,7 @@ footer {
 
 /* Navbar container */
 nav {
-  background: #1f2937; /* dark gray background */
+  background-color: #1f2937; /* dark gray background */
   color: #fff;
   padding: 12px 16px;
   display: flex;
@@ -77,7 +77,7 @@ nav {
 /* Links container (left side) */
 nav .nav-left {
   display: flex;
-  gap: 12px; /* spacing between links */
+  gap: 12px;
   align-items: center;
 }
 
@@ -95,35 +95,32 @@ nav .nav-right .logo-text:hover {
   transform: scale(1.1); /* subtle hover effect */
 }
 
-/* Link styles */
+/* Links */
 nav a {
   color: #fff;
   text-decoration: none;
   padding: 6px 12px;
   border-radius: 6px;
   font-weight: 500;
-  transition: background 0.2s ease;
+  transition: background-color 0.2s ease;
 }
-
 nav a:hover {
-  background: #111827; /* valid hex color */
+  background-color: #111827;
 }
 
+/* Buttons */
 nav button {
   padding: 6px 12px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.2s ease;
+  transition: background-color 0.2s ease;
 }
-
 nav button.secondary {
-  background: #6b7280; /* valid hex color */
+  background-color: #6b7280;
   color: white;
 }
-
 nav button.secondary:hover {
-  background: #4b5563; /* valid hex color */
+  background-color: #4b5563;
 }
-
