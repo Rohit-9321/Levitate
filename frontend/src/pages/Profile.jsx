@@ -9,6 +9,9 @@ export default function Profile() {
   const [form, setForm] = useState({
     name: user.name || "",
     email: user.email || "",
+    phone: user.phone || "",
+    address: user.address || "",
+    schoolName: user.schoolName || "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: ""
@@ -32,6 +35,9 @@ export default function Profile() {
       const res = await api.put("/auth/profile", {
         name: form.name,
         email: form.email,
+        phone: form.phone,
+        address: form.address,
+        schoolName: form.schoolName,
         currentPassword: form.currentPassword || undefined,
         newPassword: form.newPassword || undefined
       });
@@ -77,6 +83,37 @@ export default function Profile() {
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             required
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Phone Number</label>
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Address</label>
+          <textarea
+            placeholder="Address"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+            rows="3"
+            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>School Name</label>
+          <input
+            type="text"
+            placeholder="School Name"
+            value={form.schoolName}
+            onChange={(e) => setForm({ ...form, schoolName: e.target.value })}
           />
         </div>
 
