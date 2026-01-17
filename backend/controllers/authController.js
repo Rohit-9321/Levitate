@@ -6,10 +6,11 @@ const signToken = (user) =>
 
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: "Email already registered" });
-    const user = await User.create({ name, email, password, role });
+    // Force all new users to be students
+    const user = await User.create({ name, email, password, role: "student" });
     res.json({ user: { id: user._id, name: user.name, role: user.role, email: user.email } });
   } catch (e) {
     res.status(400).json({ message: e.message });
