@@ -23,9 +23,12 @@ export default function Navbar() {
       {user?.role === "student" && <Link to="/student">My Page</Link>}
       {user?.role === "admin" && <Link to="/admin">Admin</Link>}
       {user && (
-        <button className="secondary" onClick={logout}>
-          Logout ({user.name})
-        </button>
+        <>
+          <Link to="/profile">Edit Profile</Link>
+          <button className="secondary" onClick={logout}>
+            Logout ({user.name})
+          </button>
+        </>
       )}
     </nav>
   );
