@@ -13,8 +13,8 @@ export default function Login() {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      if (res.data.user.role === "admin") navigate("/admin");
-      else navigate("/student");
+      if (res.data.user.role === "admin") navigate("/admin", { replace: true });
+      else navigate("/student", { replace: true });
     } catch (e) {
       alert(e.response?.data?.message || "Login failed");
     }
