@@ -1,15 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
     try {
       await api.post("/auth/signup", form);
       alert("Signup successful. Please login.");
-      location.href = "/login";
+      navigate("/login");
     } catch (e) {
       alert(e.response?.data?.message || "Signup failed");
     }
