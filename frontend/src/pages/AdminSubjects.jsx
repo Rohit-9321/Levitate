@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
+import Loader from "../components/Loader";
 
 export default function AdminSubjects() {
   const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const load = () => api.get("/subjects").then((r) => setSubjects(r.data));
+  const load = () => {
+    setLoading(true);
+    api.get("/subjects").then((r) => {
+      setSubjects(r.data);
+      setLoading(false);
+    });
+  };
+  
   useEffect(() => { load(); }, []);
 
   const remove = async (id) => {
@@ -13,6 +22,8 @@ export default function AdminSubjects() {
     await api.delete(`/subjects/${id}`);
     load();
   };
+
+  if (loading) return <Loader />;
 
   return (
     <>

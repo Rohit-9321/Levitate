@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api";
+import Loader from "../components/Loader";
 
 export default function SubjectPage() {
   const { id } = useParams();
   const [data, setData] = useState({ subject: null, topics: [] });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get(`/subjects/${id}`).then((r) => setData(r.data));
+    setLoading(true);
+    api.get(`/subjects/${id}`).then((r) => {
+      setData(r.data);
+      setLoading(false);
+    });
   }, [id]);
+
+  if (loading) return <Loader />;
 
   return (
     <div>

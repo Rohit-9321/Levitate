@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api";
+import Loader from "../components/Loader";
 
 const ytEmbed = (url) => {
   try {
@@ -16,10 +17,11 @@ const ytEmbed = (url) => {
 
 export default function TopicPage() {
   const { id } = useParams();
-  const navigate = useNavigate();  // ✅ Moved here
+  const navigate = useNavigate();
 
   const [videos, setVideos] = useState([]);
   const [active, setActive] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState("");
@@ -28,9 +30,11 @@ export default function TopicPage() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    setLoading(true);
     api.get(`/videos/topic/${id}`).then((r) => {
       setVideos(r.data);
       setActive(r.data[0] || null);
+      setLoading(false);
     });
   }, [id]);
 
@@ -46,6 +50,8 @@ export default function TopicPage() {
     setMessages([res.data, ...messages]);
     setMsg("");
   };
+
+  if (loading) return <Loader />;
 
   return (
     <div className="grid">

@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
+import Loader from "../components/Loader";
 
 export default function TestPage() {
   const { videoId } = useParams();
   const [test, setTest] = useState(null);
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get(`/tests/${videoId}`).then((res) => setTest(res.data));
+    setLoading(true);
+    api.get(`/tests/${videoId}`).then((res) => {
+      setTest(res.data);
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, [videoId]);
 
   const submit = async () => {
@@ -17,6 +23,7 @@ export default function TestPage() {
     setResult(res.data);
   };
 
+  if (loading) return <Loader />;
   if (!test) return <p>No test available for this lecture.</p>;
 
   return (

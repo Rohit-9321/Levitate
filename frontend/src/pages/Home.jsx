@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
+import Loader from "../components/Loader";
 
 export default function Home() {
   const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/subjects").then((res) => setSubjects(res.data));
+    setLoading(true);
+    api.get("/subjects").then((res) => {
+      setSubjects(res.data);
+      setLoading(false);
+    });
   }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <>
